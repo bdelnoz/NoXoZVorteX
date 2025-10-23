@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------------------------------------------------------
-AIQuisitor :
+NoXoZVorteX :
 Open-source tool to extract, analyze, and mutualize multi-AI conversation histories (ChatGPT, Le Chat, Claude, etc.).
 Why this project?
 
@@ -15,7 +15,7 @@ Open-source and free — just like Kali Linux, my daily OS.
 Status: Alpha version (WIP). Feedback and contributions welcome!
 
 ----------------------------------------------------------------------------------------------------------------------------------------
-AIQuisitor : 
+NoXoZVorteX :
 Outil open-source pour extraire, analyser et mutualiser les historiques de conversations multi-IA (ChatGPT, Le Chat, Claude, etc.).
 Pourquoi ce projet ?
 
