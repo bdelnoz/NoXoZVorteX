@@ -1,74 +1,43 @@
-# Quick Guide - IA Conversation Analyzer
+# Quick Guide (EN)
 
-## Installation
+## 1) Install dependencies
 ```bash
-./analyse_conversations_merged.py --install
+python3 analyse_conversations_merged.py --install
 ```
 
-## Basic Usage
-1. **Local Analysis** (no API):
-   ```bash
-   ./analyse_conversations_merged.py --exec --local --aiall --fichier conversations.json
-   ```
-2. **Analysis with API** (e.g., LeChat):
-   ```bash
-   export MISTRAL_API_KEY='your_key'
-   ./analyse_conversations_merged.py --exec --lechat --fichier conversations.json
-   ```
-3. **Merge Skills**:
-   ```bash
-   ./analyse_conversations_merged.py --exec --merge-comp --fichier "*.json"
-   ```
-
----
-
-## Advanced Usage Examples
-
-### 1. Recursive Search
+## 2) Analyze JSON exports (local mode)
 ```bash
-./analyse_conversations_merged.py --exec --recursive --fichier ./conversations_folder/
+python3 analyse_conversations_merged.py --exec --local --aiall --fichier "*.json"
 ```
 
-### 2. Multi-file with Consolidation
+## 3) Analyze with Mistral API
 ```bash
-./analyse_conversations_merged.py --exec --aiall --merge-comp --fichier "*.json"
+export MISTRAL_API_KEY="<your_key>"
+python3 analyse_conversations_merged.py --exec --aiall --fichier "*.json"
 ```
 
-### 3. Analysis with Specific Model
+## 4) Merge skills by domain
 ```bash
-./analyse_conversations_merged.py --exec --model mistral-large-latest --fichier conversations.json
+python3 analyse_conversations_merged.py --exec --local --aiall --merge-comp --fichier "*.json"
 ```
 
-### 4. Optimized Performance
+## 5) Recursive processing
 ```bash
-./analyse_conversations_merged.py --exec --workers 10 --delay 0.2 --fichier "*.json"
+python3 analyse_conversations_merged.py --exec --local --aiall --recursive --fichier "./exports/*.json"
 ```
 
----
+## 6) Extract titles
+```bash
+python3 extraire_titres_conversations.py --exec --dir ./extraction_json --merge
+```
 
-## Mistral API Configuration
-- **Endpoint**: `https://api.mistral.ai/v1/chat/completions`
-- **Available Models**:
-  - `mistral-tiny` (fast, lightweight)
-  - `mistral-small` (balanced)
-  - `mistral-large-latest` (most powerful, default)
-- **API Key**:
-  ```bash
-  export MISTRAL_API_KEY="your_key"
-  ```
+## 7) ZIP -> consolidated JSON
+```bash
+python3 extract_and_collect_json.py --exec
+```
 
----
-
-## Why This Project?
-To **extract and structure** skills acquired through conversations with AIs, and generate a **comprehensive technical CV** in a few commands.
-
----
-
-### Useful Options
-| Option          | Description                          |
-|-----------------|--------------------------------------|
-| `--recursive`   | Recursive folder search.             |
-| `--merge-comp`  | Merge skills by domain.              |
-| `--simulate`    | Simulation mode (no API cost).       |
-| `--workers -w`  | Number of parallel workers.          |
-| `--delay -d`    | Delay between API requests (seconds).|
+## Generated outputs
+- CSV: `resultat_analyse_*.csv`
+- Subjects TXT: `resultat_sujets_par_domaines_*.txt`
+- Skills TXT: `resultat_analyse_*_competences_par_domaines_*.txt`
+- Logs: `log.*.log`

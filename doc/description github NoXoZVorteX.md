@@ -1,31 +1,40 @@
-----------------------------------------------------------------------------------------------------------------------------------------
-NoXoZVorteX :
-Open-source tool to extract, analyze, and mutualize multi-AI conversation histories (ChatGPT, Le Chat, Claude, etc.).
-Why this project?
+NoXoZVorteX
+===========
 
-Personal need: I spent hundreds of hours chatting with AIs across multiple accounts, with no way to centralize or analyze these conversations.
-Solution: A modular Python script to unzip, extract, and analyze conversations, with multi-AI support and report generation.
-Innovation: Automatic source detection (ChatGPT/Le Chat/Claude) and 100% AI-generated (proof that "no-code" is the future).
+## FR
+Outil open-source Python pour extraire, centraliser et analyser des conversations IA exportées (ChatGPT, LeChat/Mistral, Claude).
 
-Tech Stack:
-Python 3.8+
-Mistral model (mistral-medium) for French-language analysis.
-Open-source and free — just like Kali Linux, my daily OS.
+### Pourquoi ce projet ?
+- Besoin personnel de mutualiser des centaines de conversations dispersées.
+- Structurer automatiquement les sujets/compétences pour réutilisation (CV, profil, base de connaissances).
 
-Status: Alpha version (WIP). Feedback and contributions welcome!
+### Fonctionnalités actuellement présentes
+- Détection automatique du format (ChatGPT / LeChat / Claude).
+- Analyse locale (sans API) ou via API Mistral.
+- Déduplication de conversations.
+- Découpage de longues conversations selon un seuil de tokens.
+- Rapports CSV/TXT (sujets, compétences consolidées).
+- Outils annexes : extraction de titres JSON, extraction ZIP->JSON, script de test API.
 
-----------------------------------------------------------------------------------------------------------------------------------------
-NoXoZVorteX :
-Outil open-source pour extraire, analyser et mutualiser les historiques de conversations multi-IA (ChatGPT, Le Chat, Claude, etc.).
-Pourquoi ce projet ?
+### Statut
+Alpha / Work in Progress.
 
-Problématique personnelle : J’ai passé des centaines d’heures à discuter avec des IA sur plusieurs comptes, sans pouvoir centraliser ou analyser ces échanges.
-Solution : Un script Python modulaire qui dézippe, extrait, et analyse les conversations, avec support multi-IA et génération de rapports.
-Innovation : Détection automatique de la source (ChatGPT/Le Chat/Claude) et 100% généré par IA (preuve que le "no-code" est l’avenir).
+---
 
-Technologies :
-Python 3.8+
-Modèle Mistral (mistral-medium) pour les analyses en français.
-Open-source et gratuit — comme Kali Linux, mon OS quotidien.
+## EN
+Open-source Python tool to extract, centralize, and analyze exported AI conversations (ChatGPT, LeChat/Mistral, Claude).
 
-Statut : Version alpha (WIP). Feedback et contributions bienvenus !
+### Why this project?
+- Personal need to consolidate hundreds of fragmented conversations.
+- Automatically structure topics/skills for reuse (CV, profile, knowledge base).
+
+### Currently implemented features
+- Automatic source format detection (ChatGPT / LeChat / Claude).
+- Local analysis (no API) or Mistral API analysis.
+- Duplicate conversation detection.
+- Long-conversation splitting based on token threshold.
+- CSV/TXT reports (topics + merged skills).
+- Additional tools: title extraction, ZIP->JSON extraction, API test script.
+
+### Status
+Alpha / Work in Progress.
