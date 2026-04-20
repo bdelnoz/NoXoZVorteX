@@ -1,103 +1,98 @@
-# Analyseur de Conversations IA - README
+# README (Français) — NoXoZVorteX
 
-## Description
-Script Python pour extraire et analyser les sujets et compétences techniques abordés dans des conversations avec des IA (ChatGPT, Claude, LeChat).
-**Objectif** : Capitaliser les connaissances acquises via 900+ conversations pour alimenter un CV technique détaillé.
+## Objectif du projet
+NoXoZVorteX sert à industrialiser un flux simple:
+1. récupérer des exports IA (souvent ZIP),
+2. extraire/collecter les JSON,
+3. analyser les conversations,
+4. produire des rapports CSV/TXT orientés sujets et compétences.
 
----
+## Périmètre fonctionnel actuel
 
-## Installation
+### 1) Extraction/collecte des JSON
+Script: `extract_and_collect_json.py` (v1.7)
 
-### Prérequis
+- Recherche des fichiers `.zip`.
+- Extraction dans `./extraction_zip/<nom_archive>/`.
+- Collecte de tous les `.json` vers `./extraction_json/`.
+- Gestion des collisions de noms.
+- Commandes principales:
+  - `--help|-h`
+  - `--exec|-exe`
+  - `--simulate|-s`
+  - `--prerequis|-pr`
+  - `--install|-i`
+  - `--changelog|-ch`
+
+### 2) Analyse multi-format des conversations
+Script: `analyse_conversations_merged.py` (v2.7.5)
+
+- Formats gérés: **ChatGPT**, **LeChat/Mistral**, **Claude**.
+- Analyse locale (`--local`) ou via API Mistral.
+- Auto-détection des formats (`--aiall` / `--auto`).
+- Analyse multi-fichiers et recherche récursive (`--recursive`).
+- Déduplication par hash multi-critères.
+- Découpage automatique des conversations dépassant `MAX_TOKENS` (31 000).
+- Traitement parallèle (`--workers`) + délai API (`--delay`).
+- Rapports:
+  - CSV résultats bruts
+  - TXT sujets par domaines
+  - TXT compétences consolidées (option `--merge-comp`)
+
+Options CLI disponibles:
+- `--help`, `--exec`, `--install`, `--prerequis`, `--changelog`
+- `--chatgpt`, `--lechat`, `--claude`, `--aiall|--auto`
+- `--local`, `--simulate`, `--avec-contexte`
+- `--only-split`, `--not-split`, `--cnbr`
+- `--fichier|-F`, `--recursive`
+- `--model|-m`, `--workers|-w`, `--delay|-d`
+- `--remove`, `--delete`, `--undelete`
+
+### 3) Extraction de titres
+Script: `extraire_titres_conversations.py` (v3.2)
+
+- Extraction de titres non vides dans des exports JSON.
+- Filtre par nom de fichier (`--filter`) et exclusion par chaîne (`--exclude`).
+- Mode fusion (`--merge`) pour un seul TXT global.
+- Traitement par dossier (`--dir`) ou liste explicite (`--files`).
+
+### 4) Test API Mistral/LeChat
+Script: `testapi_lechat.sh` (v2.11)
+
+- Test endpoint Mistral (`/chat/completions` par défaut).
+- Mode simulation (`--simulate true|false`).
+- Personnalisation message (`--payload-content`).
+- Option `--create-chat` (nom de chat) côté script.
+
+## Prérequis
+
 - Python 3.8+
-- Droits d'exécution sur les scripts
+- Dépendances analyse: `requests`, `tqdm`, `tiktoken`
+- En mode API:
 
-### Commandes
 ```bash
-# Installation des dépendances (venv automatique)
-./analyse_conversations_merged.py --install
+export MISTRAL_API_KEY="votre_cle"
 ```
 
----
+## Exemples
 
-## Options (copie exacte du `--help`)
-
-| Option               | Description                                                                 |
-|----------------------|-----------------------------------------------------------------------------|
-| `--help`             | Affiche cette aide                                                          |
-| `--exec`             | Lance l'analyse                                                            |
-| `--install`          | Installe les dépendances                                                   |
-| `--lechat`           | Format d'export LeChat (Mistral)                                           |
-| `--chatgpt`          | Format d'export ChatGPT                                                    |
-| `--claude`           | Format d'export Claude                                                     |
-| `--aiall`, `--auto`  | Auto-détection de TOUS les formats                                         |
-| `--local`            | Analyse locale SANS appel API (gratuit)                                    |
-| `--avec-contexte`    | Ajoute descriptions/exemples aux sujets                                    |
-| `--merge-comp`       | Affiche TOUTES les compétences par domaines                                |
-| `--simulate`         | Mode simulation API (test sans crédits)                                    |
-| `--only-split`       | Analyse UNIQUEMENT conversations > 31000 tokens                           |
-| `--not-split`        | Analyse UNIQUEMENT conversations ≤ 31000 tokens                           |
-| `--cnbr N`           | Analyse uniquement la conversation N                                       |
-| `--fichier`, `-F`    | Fichier(s) JSON (supporte `*.json` pour plusieurs)                        |
-| `--recursive`        | Recherche récursive dans sous-dossiers                                     |
-| `--model`, `-m`      | Modèle Pixtral (défaut: `pixtral-large-latest`)                            |
-| `--workers`, `-w N`  | Workers parallèles (défaut: 5)                                             |
-| `--delay`, `-d N`    | Délai entre requêtes API (défaut: 0.5s)                                    |
-| `--remove`           | Supprime élément créé (CSV/log)                                            |
-| `--dir`, `-d STR`    | Répertoire des JSON (défaut: courant)                                      |
-| `--files`            | Liste de fichiers JSON à traiter                                           |
-| `--filter STR`       | Filtre pour sélectionner les fichiers                                      |
-| `--changelog`        | Afficher changelog complet                                                 |
-| `--exclude`, `-E`    | Chaîne à exclure des titres                                                |
-
----
-
-## Exemples d'Exécution
-
-### 1. Installation
+### Pipeline recommandé
 ```bash
-./analyse_conversations_merged.py --install
+python3 extract_and_collect_json.py --exec
+python3 analyse_conversations_merged.py --exec --local --aiall --fichier "./extraction_json/*.json"
 ```
 
-### 2. Analyse locale (tous formats)
+### Analyse API + fusion des compétences
 ```bash
-./analyse_conversations_merged.py --local --aiall
+python3 analyse_conversations_merged.py --exec --aiall --merge-comp --fichier "./extraction_json/*.json"
 ```
 
-### 3. Analyse avec API (LeChat)
+### Extraction des titres fusionnée
 ```bash
-export MISTRAL_API_KEY='votre_clé'
-./analyse_conversations_merged.py --lechat
+python3 extraire_titres_conversations.py --exec --dir ./extraction_json --merge
 ```
 
-### 4. Fusion des compétences par domaines
-```bash
-./analyse_conversations_merged.py --merge-comp
-```
-
-### 5. Recherche récursive
-```bash
-./analyse_conversations_merged.py --recursive
-```
-
----
-
-## Sorties
-- `resultat_analyse_*.csv` : Résultats structurés (sujets, compétences, tokens).
-- `log.analyse_*.log` : Logs détaillés de l'analyse.
-- `.backup.*` : Backups automatiques.
-
----
-
-### Exemple de Sortie (extrait de `resultat_analyse_sujets_multi_local_20251021_040516.csv`)
-```csv
-sujet,compétences,tokens,date
-Cybersécurité,Firewall Linux,IPtables,2025-10-20
-Scripting,Python avancé,Bash,2025-10-21
-Intelligence Artificielle,Tokenisation,Modèles de langage,2025-10-20
-```
-
----
-
-## Objectif Initial
-Ce script a été conçu pour extraire et structurer les **927+ conversations** avec des IA, afin de générer un **CV technique complet** (30-40 pages) mettant en avant les compétences acquises via l'interaction avec ChatGPT, Claude, LeChat, etc.
+## Fichiers générés (résumé)
+- Analyse: `resultat_analyse_sujets_*.csv`, `resultat_sujets_par_domaines_*.txt`
+- Compétences: `resultat_analyse_*_competences_par_domaines.txt`
+- Logs: `log.*.log`
